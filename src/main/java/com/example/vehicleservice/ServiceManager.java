@@ -104,6 +104,131 @@ public class ServiceManager {
         return booking;
     }
 
+    public Booking cancelBooking(String bookingId) {
+        Booking booking = findBookingById(bookingId).orElseThrow(() -> new IllegalArgumentException("Booking not found: " + bookingId));
+        if (booking.getStatus() != BookingStatus.PENDING) {
+            throw new IllegalArgumentException("Booking cannot be cancelled.");
+        }
+        booking.setStatus(BookingStatus.CANCELLED);
+        return booking;
+    }
+
+    public boolean updateVehicle(String vehicleId, String make, String model, int year, String ownerName) {
+        Optional<Vehicle> vehicleOpt = findVehicleById(vehicleId);
+        if (vehicleOpt.isPresent()) {
+            Vehicle vehicle = vehicleOpt.get();
+            vehicle.setMake(make);
+            vehicle.setModel(model);
+            vehicle.setYear(year);
+            vehicle.setOwnerName(ownerName);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateCustomer(String customerId, String name, String email, String phone) {
+        Optional<Customer> customerOpt = findCustomerById(customerId);
+        if (customerOpt.isPresent()) {
+            Customer customer = customerOpt.get();
+            customer.setName(name);
+            customer.setEmail(email);
+            customer.setPhone(phone);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateBooking(String bookingId, LocalDate requestedDate, String description) {
+        Optional<Booking> bookingOpt = findBookingById(bookingId);
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            if (booking.getStatus() == BookingStatus.PENDING) {
+                booking.setRequestedDate(requestedDate);
+                booking.setDescription(description);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteVehicle(String vehicleId) {
+        return vehicles.removeIf(v -> v.getId().equals(vehicleId));
+    }
+
+    public boolean deleteCustomer(String customerId) {
+        return customers.removeIf(c -> c.getId().equals(customerId));
+    }
+
+    public boolean deleteBooking(String bookingId) {
+        Optional<Booking> bookingOpt = findBookingById(bookingId);
+        if (bookingOpt.isPresent() && bookingOpt.get().getStatus() == BookingStatus.PENDING) {
+            bookings.removeIf(b -> b.getId().equals(bookingId));
+            return true;
+        }
+        return false;
+    }
+
+    public Optional<Customer> findCustomerById(String customerId) {
+        return customers.stream().filter(c -> c.getId().equals(customerId)).findFirst();
+    }
+
+    public List<Vehicle> searchVehiclesByMake(String make) {
+        return vehicles.stream()
+                .filter(v -> v.getMake().equalsIgnoreCase(make))
+                .toList();
+    }
+
+    public List<Vehicle> searchVehiclesByModel(String model) {
+        return vehicles.stream()
+                .filter(v -> v.getModel().equalsIgnoreCase(model))
+                .toList();
+    }
+
+    public List<Customer> searchCustomersByName(String name) {
+        return customers.stream()
+                .filter(c -> c.getName().toLowerCase().contains(name.toLowerCase()))
+                .toList();
+    }
+
+    public List<Booking> listPendingBookings() {
+        return bookings.stream()
+                .filter(b -> b.getStatus() == BookingStatus.PENDING)
+                .toList();
+    }
+
+    public List<Booking> listCompletedBookings() {
+        return bookings.stream()
+                .filter(b -> b.getStatus() == BookingStatus.COMPLETED)
+                .toList();
+    }
+
+    public List<Booking> listCancelledBookings() {
+        return bookings.stream()
+                .filter(b -> b.getStatus() == BookingStatus.CANCELLED)
+                .toList();
+    }
+
+    public double getTotalRevenue() {
+        return records.stream()
+                .mapToDouble(ServiceRecord::getCost)
+                .sum();
+    }
+
+    public int getTotalServices() {
+        return records.size();
+    }
+
+    public double getAverageServiceCost() {
+        if (records.isEmpty()) return 0.0;
+        return getTotalRevenue() / records.size();
+    }
+
+    public List<ServiceRecord> getServiceRecordsByDateRange(LocalDate startDate, LocalDate endDate) {
+        return records.stream()
+                .filter(r -> !r.getServiceDate().isBefore(startDate) && !r.getServiceDate().isAfter(endDate))
+                .toList();
+    }
+
     private static String generateId() {
         return UUID.randomUUID().toString().substring(0, 8);
     }

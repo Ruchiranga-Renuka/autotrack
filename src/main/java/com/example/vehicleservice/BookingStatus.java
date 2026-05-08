@@ -2,7 +2,8 @@ package com.example.vehicleservice;
 
 public enum BookingStatus {
     PENDING,
-    COMPLETED;
+    COMPLETED,
+    CANCELLED;
 
     @Override
     public String toString() {

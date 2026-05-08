@@ -2,9 +2,9 @@ package com.example.vehicleservice;
 
 public class Customer {
     private final String id;
-    private final String name;
-    private final String email;
-    private final String phone;
+    private String name;
+    private String email;
+    private String phone;
 
     public Customer(String id, String name, String email, String phone) {
         this.id = id;
@@ -21,12 +21,24 @@ public class Customer {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPhone() {
         return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

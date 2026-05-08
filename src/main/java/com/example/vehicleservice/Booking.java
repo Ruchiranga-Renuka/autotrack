@@ -6,8 +6,8 @@ public class Booking {
     private final String id;
     private final String customerId;
     private final String vehicleId;
-    private final LocalDate requestedDate;
-    private final String description;
+    private LocalDate requestedDate;
+    private String description;
     private BookingStatus status;
 
     public Booking(String id, String customerId, String vehicleId, LocalDate requestedDate, String description) {
@@ -35,8 +35,16 @@ public class Booking {
         return requestedDate;
     }
 
+    public void setRequestedDate(LocalDate requestedDate) {
+        this.requestedDate = requestedDate;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public BookingStatus getStatus() {
