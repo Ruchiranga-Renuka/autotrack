@@ -1,5 +1,6 @@
 package com.example.vehicleservice;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -8,6 +9,14 @@ import java.util.Scanner;
 public class VehicleServiceApp {
     public static void main(String[] args) {
         ServiceManager manager = new ServiceManager();
+        if (args.length > 0 && args[0].equalsIgnoreCase("console")) {
+            runConsole(manager);
+        } else {
+            SwingUtilities.invokeLater(() -> new VehicleServiceUI(manager).setVisible(true));
+        }
+    }
+
+    private static void runConsole(ServiceManager manager) {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
