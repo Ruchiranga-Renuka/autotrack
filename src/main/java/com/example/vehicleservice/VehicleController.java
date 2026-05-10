@@ -23,9 +23,9 @@ public class VehicleController {
     }
 
     @PostMapping("/addVehicle")
-    public String addVehicle(@RequestParam String make, @RequestParam String model,
+    public String addVehicle(@RequestParam String Vehicle, @RequestParam String model,
                            @RequestParam int year, @RequestParam String ownerName) {
-        manager.addVehicle(make, model, year, ownerName);
+        manager.addVehicle(Vehicle, model, year, ownerName);
         return "redirect:/";
     }
 

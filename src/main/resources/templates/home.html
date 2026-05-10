@@ -16,8 +16,8 @@
             <h2>Add Vehicle</h2>
             <form action="/addVehicle" method="post">
                 <div class="form-row">
-                    <label for="make">Make</label>
-                    <input id="make" type="text" name="make" required>
+                    <label for="vehicle">Vehicle</label>
+                    <input id="vehicle" type="text" name="make" required>
                 </div>
                 <div class="form-row">
                     <label for="model">Model</label>
@@ -70,7 +70,7 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Make</th>
+                    <th>Vehicle</th>
                     <th>Model</th>
                     <th>Year</th>
                     <th>Owner</th>
@@ -79,7 +79,7 @@
                 <tbody>
                 <tr th:each="vehicle : ${vehicles}">
                     <td th:text="${vehicle.id}"></td>
-                    <td th:text="${vehicle.make}"></td>
+                    <td th:text="${vehicle.Vehicle}"></td>
                     <td th:text="${vehicle.model}"></td>
                     <td th:text="${vehicle.year}"></td>
                     <td th:text="${vehicle.ownerName}"></td>

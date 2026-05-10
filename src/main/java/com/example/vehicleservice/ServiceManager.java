@@ -12,8 +12,8 @@ public class ServiceManager {
     private final List<Customer> customers = new ArrayList<>();
     private final List<Booking> bookings = new ArrayList<>();
 
-    public Vehicle addVehicle(String make, String model, int year, String ownerName) {
-        Vehicle vehicle = new Vehicle(generateId(), make, model, year, ownerName);
+    public Vehicle addVehicle(String vehicleMake, String model, int year, String ownerName) {
+        Vehicle vehicle = new Vehicle(generateId(), vehicleMake, model, year, ownerName);
         vehicles.add(vehicle);
         return vehicle;
     }
@@ -113,11 +113,11 @@ public class ServiceManager {
         return booking;
     }
 
-    public boolean updateVehicle(String vehicleId, String make, String model, int year, String ownerName) {
+    public boolean updateVehicle(String vehicleId, String vehicleMake, String model, int year, String ownerName) {
         Optional<Vehicle> vehicleOpt = findVehicleById(vehicleId);
         if (vehicleOpt.isPresent()) {
             Vehicle vehicle = vehicleOpt.get();
-            vehicle.setMake(make);
+            vehicle.setMake(vehicleMake);
             vehicle.setModel(model);
             vehicle.setYear(year);
             vehicle.setOwnerName(ownerName);

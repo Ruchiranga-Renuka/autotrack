@@ -66,7 +66,7 @@ public class VehicleServiceUI extends JFrame {
         addLabelAndComponent(form, gbc, row++, "Email:", customerEmailField);
         addLabelAndComponent(form, gbc, row++, "Phone:", customerPhoneField);
         addLabelAndComponent(form, gbc, row++, "Vehicle ID (leave blank to add new vehicle):", customerVehicleIdField);
-        addLabelAndComponent(form, gbc, row++, "New vehicle make:", customerMakeField);
+        addLabelAndComponent(form, gbc, row++, "Vehicle:", customerMakeField);
         addLabelAndComponent(form, gbc, row++, "New vehicle model:", customerModelField);
         addLabelAndComponent(form, gbc, row++, "New vehicle year:", customerYearField);
         addLabelAndComponent(form, gbc, row++, "Service date (YYYY-MM-DD):", customerDateField);
@@ -122,7 +122,7 @@ public class VehicleServiceUI extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
 
         int row = 0;
-        addLabelAndComponent(panel, gbc, row++, "Make:", adminMakeField);
+        addLabelAndComponent(panel, gbc, row++, "Vehicle:", adminMakeField);
         addLabelAndComponent(panel, gbc, row++, "Model:", adminModelField);
         addLabelAndComponent(panel, gbc, row++, "Year:", adminYearField);
         addLabelAndComponent(panel, gbc, row++, "Owner name:", adminOwnerField);
