@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -18,7 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/css/**", "/images/**").permitAll()
+                .antMatchers("/css/**", "/images/**", "/login", "/register").permitAll()
                 .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -26,13 +25,14 @@ public class SecurityConfig {
                 .permitAll()
             .and()
             .logout()
+                .logoutSuccessUrl("/login?logout")
                 .permitAll();
 
         return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public InMemoryUserDetailsManager userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder()
             .username("admin")
             .password("password")
