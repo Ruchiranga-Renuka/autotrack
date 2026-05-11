@@ -237,7 +237,7 @@ public class VehicleServiceUI extends JFrame {
                     return;
                 }
                 int year = Integer.parseInt(yearText);
-                Vehicle vehicle = manager.addVehicle(make, model, year, name);
+                Vehicle vehicle = manager.addVehicle(make, model, year, name, null);
                 vehicleId = vehicle.getId();
             } else {
                 if (manager.findVehicleById(vehicleId).isEmpty()) {
@@ -266,7 +266,7 @@ public class VehicleServiceUI extends JFrame {
                 return;
             }
             int year = Integer.parseInt(yearText);
-            Vehicle vehicle = manager.addVehicle(make, model, year, owner);
+            Vehicle vehicle = manager.addVehicle(make, model, year, owner, null);
             showInfo("Vehicle added: " + vehicle.getId());
             clearAdminVehicleFields();
             refreshAll();

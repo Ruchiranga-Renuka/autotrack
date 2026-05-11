@@ -28,6 +28,11 @@ public class VehicleController {
         return "home";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @PostMapping("/addVehicle")
     public String addVehicle(@RequestParam String Vehicle, @RequestParam String model,
                            @RequestParam int year, @RequestParam String ownerName,

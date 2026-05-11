@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Vehicle Service Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <section class="banner">
+        <h1>Vehicle Service Management System</h1>
+        <p>Please log in to access the system.</p>
+    </section>
+
+    <div class="section-row">
+        <section class="card">
+            <h2>Login</h2>
+            <form th:action="@{/login}" method="post">
+                <div class="form-row">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" name="username" required>
+                </div>
+                <div class="form-row">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" required>
+                </div>
+                <div th:if="${param.error}" class="form-row">
+                    <p style="color: red;">Invalid username or password.</p>
+                </div>
+                <div th:if="${param.logout}" class="form-row">
+                    <p style="color: green;">You have been logged out successfully.</p>
+                </div>
+                <div class="button-row">
+                    <button type="submit" class="primary">Login</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+</body>
+</html>
