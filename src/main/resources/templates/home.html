@@ -14,10 +14,10 @@
     <div class="section-row">
         <section class="card">
             <h2>Add Vehicle</h2>
-            <form action="/addVehicle" method="post">
+            <form action="/addVehicle" method="post" enctype="multipart/form-data">
                 <div class="form-row">
                     <label for="vehicle">Vehicle</label>
-                    <input id="vehicle" type="text" name="make" required>
+                    <input id="vehicle" type="text" name="Vehicle" required>
                 </div>
                 <div class="form-row">
                     <label for="model">Model</label>
@@ -30,6 +30,10 @@
                 <div class="form-row">
                     <label for="ownerName">Owner Name</label>
                     <input id="ownerName" type="text" name="ownerName" required>
+                </div>
+                <div class="form-row">
+                    <label for="photo">Vehicle Photo</label>
+                    <input id="photo" type="file" name="photo" accept="image/*">
                 </div>
                 <div class="button-row">
                     <button type="submit" class="primary">Add Vehicle</button>
@@ -74,15 +78,20 @@
                     <th>Model</th>
                     <th>Year</th>
                     <th>Owner</th>
+                    <th>Photo</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="vehicle : ${vehicles}">
                     <td th:text="${vehicle.id}"></td>
-                    <td th:text="${vehicle.Vehicle}"></td>
+                    <td th:text="${vehicle.make}"></td>
                     <td th:text="${vehicle.model}"></td>
                     <td th:text="${vehicle.year}"></td>
                     <td th:text="${vehicle.ownerName}"></td>
+                    <td>
+                        <img th:if="${vehicle.photoPath}" th:src="${vehicle.photoPath}" alt="Vehicle Photo" style="max-width: 100px; max-height: 100px;">
+                        <span th:if="${!vehicle.photoPath}">No Photo</span>
+                    </td>
                 </tr>
                 </tbody>
             </table>

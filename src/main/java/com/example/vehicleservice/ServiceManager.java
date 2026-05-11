@@ -12,8 +12,8 @@ public class ServiceManager {
     private final List<Customer> customers = new ArrayList<>();
     private final List<Booking> bookings = new ArrayList<>();
 
-    public Vehicle addVehicle(String vehicleMake, String model, int year, String ownerName) {
-        Vehicle vehicle = new Vehicle(generateId(), vehicleMake, model, year, ownerName);
+    public Vehicle addVehicle(String vehicleMake, String model, int year, String ownerName, String photoPath) {
+        Vehicle vehicle = new Vehicle(generateId(), vehicleMake, model, year, ownerName, photoPath);
         vehicles.add(vehicle);
         return vehicle;
     }

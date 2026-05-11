@@ -6,13 +6,15 @@ public class Vehicle {
     private String model;
     private int year;
     private String ownerName;
+    private String photoPath;
 
-    public Vehicle(String id, String make, String model, int year, String ownerName) {
+    public Vehicle(String id, String make, String model, int year, String ownerName, String photoPath) {
         this.id = id;
         this.make = make;
         this.model = model;
         this.year = year;
         this.ownerName = ownerName;
+        this.photoPath = photoPath;
     }
 
     public String getId() {
@@ -49,6 +51,14 @@ public class Vehicle {
 
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
     @Override
