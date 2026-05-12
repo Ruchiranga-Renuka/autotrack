@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login - Vehicle Service Management</title>
@@ -6,42 +6,64 @@
 </head>
 <body>
 <div class="container">
-    <section class="banner">
-        <h1>Vehicle Service Management</h1>
-        <p>Secure login for your service dashboard. Register a new account to begin tracking vehicles, bookings, and service history.</p>
-    </section>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <h1 class="brand">BHROMONBONDHU</h1>
+            <p class="sidebar-copy">Sign in to your service dashboard and manage vehicles, bookings, and maintenance history.</p>
+            <div class="nav-separator"></div>
+            <ul class="nav-list">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
+                <li><a th:href="@{/register}">Register</a></li>
+                <li><a href="#">Support</a></li>
+            </ul>
+            <div class="sidebar-cta">
+                <a class="button-link primary" th:href="@{/register}">Create Account</a>
+            </div>
+        </aside>
+        <main class="content">
+            <section class="banner">
+                <div class="banner__hero">
+                    <div>
+                        <h1>Car Rental Management Login</h1>
+                        <p>Secure access to your vehicle service workspace with modern design and clear navigation.</p>
+                    </div>
+                </div>
+            </section>
 
-    <div class="section-row">
-        <section class="card split-card">
-            <div class="split-card__left">
-                <h2>Login</h2>
-                <form th:action="@{/login}" method="post">
-                    <div class="form-row">
-                        <label for="username">Username</label>
-                        <input id="username" type="text" name="username" required>
+            <div class="section-row">
+                <section class="card split-card">
+                    <div class="split-card__left">
+                        <h2>Login</h2>
+                        <form th:action="@{/login}" method="post">
+                            <div class="form-row">
+                                <label for="username">Username</label>
+                                <input id="username" type="text" name="username" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="password">Password</label>
+                                <input id="password" type="password" name="password" required>
+                            </div>
+                            <div th:if="${param.error}" class="message error-message">
+                                Invalid username or password.
+                            </div>
+                            <div th:if="${param.logout}" class="message success-message">
+                                You have been logged out successfully.
+                            </div>
+                            <div th:if="${success}" class="message success-message" th:text="${success}"></div>
+                            <div class="button-row">
+                                <button type="submit" class="primary">Login</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-row">
-                        <label for="password">Password</label>
-                        <input id="password" type="password" name="password" required>
+                    <div class="split-card__right">
+                        <h3>New here?</h3>
+                        <p>Create an account to manage your car rentals, vehicle service records, and bookings from one dashboard.</p>
+                        <a class="button-link secondary" th:href="@{/register}">Register a new account</a>
                     </div>
-                    <div th:if="${param.error}" class="message error-message">
-                        Invalid username or password.
-                    </div>
-                    <div th:if="${param.logout}" class="message success-message">
-                        You have been logged out successfully.
-                    </div>
-                    <div th:if="${success}" class="message success-message" th:text="${success}"></div>
-                    <div class="button-row">
-                        <button type="submit" class="primary">Login</button>
-                    </div>
-                </form>
+                </section>
             </div>
-            <div class="split-card__right">
-                <h3>New here?</h3>
-                <p>Create an account to manage your vehicle service appointments, share vehicle details, and stay organized.</p>
-                <a class="secondary button-link" th:href="@{/register}">Register a new account</a>
-            </div>
-        </section>
+        </main>
     </div>
 </div>
 </body>

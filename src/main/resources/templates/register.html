@@ -6,56 +6,78 @@
 </head>
 <body>
 <div class="container">
-    <section class="banner">
-        <h1>Register Your Account</h1>
-        <p>Share your vehicle details, contact information, and login credentials to get started with service bookings.</p>
-    </section>
-
-    <div class="section-row">
-        <section class="card">
-            <h2>Create a new account</h2>
-            <form th:action="@{/register}" method="post">
-                <div class="form-row">
-                    <label for="username">Username</label>
-                    <input id="username" type="text" name="username" required>
-                </div>
-                <div class="form-row">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" name="password" required>
-                </div>
-                <div class="form-row">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input id="confirmPassword" type="password" name="confirmPassword" required>
-                </div>
-                <div class="form-row">
-                    <label for="fullName">Full Name</label>
-                    <input id="fullName" type="text" name="fullName" required>
-                </div>
-                <div class="form-row">
-                    <label for="vehicleNumber">Vehicle Number</label>
-                    <input id="vehicleNumber" type="text" name="vehicleNumber" required>
-                </div>
-                <div class="form-row">
-                    <label for="idNumber">ID Number</label>
-                    <input id="idNumber" type="text" name="idNumber" required>
-                </div>
-                <div class="form-row">
-                    <label for="telephone">Telephone</label>
-                    <input id="telephone" type="tel" name="telephone" required>
-                </div>
-                <div class="form-row">
-                    <label for="address">Address</label>
-                    <input id="address" type="text" name="address" required>
-                </div>
-                <div th:if="${error}" class="message error-message" th:text="${error}"></div>
-                <div class="button-row">
-                    <button type="submit" class="primary">Register</button>
-                </div>
-            </form>
-            <div class="form-footer">
-                <p>Already have an account? <a th:href="@{/login}">Login here</a>.</p>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <h1 class="brand">BHROMONBONDHU</h1>
+            <p class="sidebar-copy">Register and start managing car rentals, service tasks, and vehicle history in one premium system.</p>
+            <div class="nav-separator"></div>
+            <ul class="nav-list">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
+                <li><a th:href="@{/register}">Register</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+            <div class="sidebar-cta">
+                <a class="button-link primary" th:href="@{/login}">Already Login</a>
             </div>
-        </section>
+        </aside>
+        <main class="content">
+            <section class="banner">
+                <div class="banner__hero">
+                    <div>
+                        <h1>Register Your Account</h1>
+                        <p>Join the system and connect your vehicle details, contact info, and service preferences with a refined dashboard.</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-row">
+                <section class="card">
+                    <h2>Create a new account</h2>
+                    <form th:action="@{/register}" method="post">
+                        <div class="form-row">
+                            <label for="username">Username</label>
+                            <input id="username" type="text" name="username" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" name="password" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input id="confirmPassword" type="password" name="confirmPassword" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="fullName">Full Name</label>
+                            <input id="fullName" type="text" name="fullName" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="vehicleNumber">Vehicle Number</label>
+                            <input id="vehicleNumber" type="text" name="vehicleNumber" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="idNumber">ID Number</label>
+                            <input id="idNumber" type="text" name="idNumber" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="telephone">Telephone</label>
+                            <input id="telephone" type="tel" name="telephone" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="address">Address</label>
+                            <input id="address" type="text" name="address" required>
+                        </div>
+                        <div th:if="${error}" class="message error-message" th:text="${error}"></div>
+                        <div class="button-row">
+                            <button type="submit" class="primary">Register</button>
+                        </div>
+                    </form>
+                    <div class="form-footer">
+                        <p>Already have an account? <a th:href="@{/login}">Login here</a>.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
 </div>
 </body>
