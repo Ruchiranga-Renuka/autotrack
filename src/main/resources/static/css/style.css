@@ -16,7 +16,7 @@
 body {
     margin: 0;
     min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: radial-gradient(circle at 10% 20%, rgba(93, 242, 255, 0.16), transparent 24%),
                 radial-gradient(circle at 90% 10%, rgba(126, 95, 255, 0.14), transparent 18%),
                 linear-gradient(180deg, #06101d 0%, #071625 36%, #08111d 100%);
