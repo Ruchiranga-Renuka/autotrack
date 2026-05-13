@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -31,11 +32,14 @@ public class VehicleController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Vehicle> vehicles = manager.listVehicles();
-        List<ServiceRecord> records = manager.listServiceRecords();
-        model.addAttribute("vehicles", vehicles);
-        model.addAttribute("records", records);
         return "home";
+    }
+
+    @GetMapping("/vehicles")
+    public String vehicles(Model model) {
+        model.addAttribute("vehicles", manager.listVehicles());
+        model.addAttribute("records", manager.listServiceRecords());
+        return "vehicles";
     }
 
     @GetMapping("/login")
@@ -110,6 +114,19 @@ public class VehicleController {
         }
         manager.addVehicle(Vehicle, model, year, ownerName, photoPath);
         return "redirect:/";
+    }
+
+    @GetMapping("/vehicle/{id}")
+    public String vehicleDetails(@PathVariable String id, Model model) {
+        Optional<Vehicle> vehicleOpt = manager.findVehicleById(id);
+        if (vehicleOpt.isEmpty()) {
+            return "redirect:/";
+        }
+        Vehicle vehicle = vehicleOpt.get();
+        List<ServiceRecord> records = manager.listRecordsForVehicle(id);
+        model.addAttribute("vehicle", vehicle);
+        model.addAttribute("records", records);
+        return "vehicle-details";
     }
 
     @PostMapping("/addServiceRecord")
