@@ -113,8 +113,8 @@
                             <td th:text="${vehicle.year}"></td>
                             <td th:text="${vehicle.ownerName}"></td>
                             <td>
-                                <img th:if="${vehicle.photoPath}" th:src="${vehicle.photoPath}" alt="Vehicle Photo" class="vehicle-photo">
-                                <span th:if="${!vehicle.photoPath}">No Photo</span>
+                                <img th:if="${vehicle.photoPath != null and !vehicle.photoPath.isEmpty()}" th:src="${vehicle.photoPath}" alt="Vehicle Photo" class="vehicle-photo">
+                                <span th:if="${vehicle.photoPath == null or vehicle.photoPath.isEmpty()}">No Photo</span>
                             </td>
                         </tr>
                         <tr th:if="${vehicles.empty}">
