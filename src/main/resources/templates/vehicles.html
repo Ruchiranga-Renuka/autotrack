@@ -34,7 +34,7 @@
             </section>
 
             <div class="section-row">
-                <section class="card">
+                <section class="card" id="add-vehicle">
                     <h2>Add Vehicle</h2>
                     <form th:action="@{/addVehicle}" method="post" enctype="multipart/form-data">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -64,7 +64,7 @@
                     </form>
                 </section>
 
-                <section class="card">
+                <section class="card" id="add-service">
                     <h2>Add Service Record</h2>
                     <form th:action="@{/addServiceRecord}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
