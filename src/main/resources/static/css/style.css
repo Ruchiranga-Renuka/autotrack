@@ -369,7 +369,7 @@ a {
 }
 
 .nav-link:hover {
-    color: #FFD700;
+    color: #010100;
     transform: translateY(-2px);
 }
 
@@ -380,8 +380,8 @@ a {
 
 .nav-logout-btn {
     background: rgba(255, 255, 255, 0.2);
-    border: 2px solid #FFD700;
-    color: #FFD700;
+    border: 2px solid #0a0800;
+    color: #000000;
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: 700;
