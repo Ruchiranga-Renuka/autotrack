@@ -43,7 +43,18 @@ public class VehicleController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("loginAction", "/login");
+        model.addAttribute("pageTitle", "Login - Vehicle Service Management");
+        model.addAttribute("viewTitle", "Login");
+        return "login";
+    }
+
+    @GetMapping("/admin/login")
+    public String adminLogin(Model model) {
+        model.addAttribute("loginAction", "/login");
+        model.addAttribute("pageTitle", "Admin Login - Vehicle Service Management");
+        model.addAttribute("viewTitle", "Admin Login");
         return "login";
     }
 
