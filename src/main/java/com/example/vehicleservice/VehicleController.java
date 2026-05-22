@@ -124,7 +124,7 @@ public class VehicleController {
             }
         }
         manager.addVehicle(Vehicle, model, year, ownerName, photoPath);
-        return "redirect:/";
+        return "redirect:/vehicles";
     }
 
     @GetMapping("/vehicle/{id}")
@@ -149,6 +149,10 @@ public class VehicleController {
         } catch (DateTimeParseException e) {
             // Handle error
         }
-        return "redirect:/";
+        Optional<Vehicle> vehicleOpt = manager.findVehicleById(vehicleId);
+        if (vehicleOpt.isPresent()) {
+            return "redirect:/vehicle/" + vehicleId;
+        }
+        return "redirect:/vehicles";
     }
 }

@@ -4,27 +4,28 @@
     <title>Vehicle Management - Vehicle Service Management</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
+<body class="page-app">
 <div class="container">
     <div class="app-shell">
         <aside class="sidebar">
-            <h1 class="brand">Vehicle Management</h1>
-            <p class="sidebar-copy">Add new vehicles, view existing records, and manage service history from a single management screen.</p>
+            <h1 class="brand">VSMS</h1>
+            <p class="sidebar-copy">Add vehicles, upload photos, and track service history from your workshop dashboard.</p>
             <div class="nav-separator"></div>
             <ul class="nav-list">
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/vehicles}">Vehicle Management</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
             </ul>
             <div class="sidebar-cta">
                 <a class="button-link primary" th:href="@{/}">Back to Home</a>
             </div>
         </aside>
         <main class="content">
-            <section class="banner">
+            <section class="banner banner--vehicle">
                 <div class="banner__hero">
                     <div>
-                        <h1>Vehicle & Service Records</h1>
-                        <p>Manage vehicles and service history without crowding the home dashboard.</p>
+                        <h1>Vehicle &amp; Service Records</h1>
+                        <p>Manage your fleet, upload vehicle images, and keep every service visit on record.</p>
                     </div>
                     <form th:action="@{/logout}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -39,16 +40,16 @@
                     <form th:action="@{/addVehicle}" method="post" enctype="multipart/form-data">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <div class="form-row">
-                            <label for="vehicle">Vehicle</label>
-                            <input id="vehicle" type="text" name="Vehicle" required>
+                            <label for="vehicle">Make / Brand</label>
+                            <input id="vehicle" type="text" name="Vehicle" placeholder="e.g. Toyota" required>
                         </div>
                         <div class="form-row">
                             <label for="model">Model</label>
-                            <input id="model" type="text" name="model" required>
+                            <input id="model" type="text" name="model" placeholder="e.g. Corolla" required>
                         </div>
                         <div class="form-row">
                             <label for="year">Year</label>
-                            <input id="year" type="number" name="year" required>
+                            <input id="year" type="number" name="year" min="1900" max="2100" required>
                         </div>
                         <div class="form-row">
                             <label for="ownerName">Owner Name</label>
@@ -92,41 +93,31 @@
             </div>
 
             <section class="card">
-                <h2>Vehicles</h2>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Vehicle</th>
-                            <th>Model</th>
-                            <th>Year</th>
-                            <th>Owner</th>
-                            <th>Photo</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="vehicle : ${vehicles}">
-                            <td><a th:href="@{/vehicle/{id}(id=${vehicle.id})}" th:text="${vehicle.id}"></a></td>
-                            <td th:text="${vehicle.make}"></td>
-                            <td th:text="${vehicle.model}"></td>
-                            <td th:text="${vehicle.year}"></td>
-                            <td th:text="${vehicle.ownerName}"></td>
-                            <td>
-                                <img th:if="${vehicle.photoPath != null and !vehicle.photoPath.isEmpty()}" th:src="${vehicle.photoPath}" alt="Vehicle Photo" class="vehicle-photo">
-                                <span th:if="${vehicle.photoPath == null or vehicle.photoPath.isEmpty()}">No Photo</span>
-                            </td>
-                        </tr>
-                        <tr th:if="${vehicles.empty}">
-                            <td colspan="6">No vehicles found yet.</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <h2>Registered Vehicles</h2>
+                <div th:if="${vehicles.empty}" class="form-footer">
+                    <p>No vehicles yet. Add your first vehicle above and upload a photo.</p>
+                </div>
+                <div class="vehicle-grid" th:unless="${vehicles.empty}">
+                    <article class="vehicle-card" th:each="vehicle : ${vehicles}">
+                        <img th:if="${vehicle.photoPath != null and !vehicle.photoPath.isEmpty()}"
+                             th:src="${vehicle.photoPath}" alt="Vehicle photo" class="vehicle-card__image" />
+                        <div th:if="${vehicle.photoPath == null or vehicle.photoPath.isEmpty()}"
+                             class="vehicle-card__image vehicle-card__image--placeholder">
+                            No photo uploaded
+                        </div>
+                        <div class="vehicle-card__body">
+                            <h3 th:text="${vehicle.make + ' ' + vehicle.model}">Vehicle</h3>
+                            <p><strong>Year:</strong> <span th:text="${vehicle.year}"></span></p>
+                            <p><strong>Owner:</strong> <span th:text="${vehicle.ownerName}"></span></p>
+                            <p><strong>ID:</strong> <span th:text="${vehicle.id}"></span></p>
+                            <a class="vehicle-card__link" th:href="@{/vehicle/{id}(id=${vehicle.id})}">View details &rarr;</a>
+                        </div>
+                    </article>
                 </div>
             </section>
 
             <section class="card">
-                <h2>Service Records</h2>
+                <h2>All Service Records</h2>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -141,7 +132,9 @@
                         <tbody>
                         <tr th:each="record : ${records}">
                             <td th:text="${record.id}"></td>
-                            <td th:text="${record.vehicleId}"></td>
+                            <td>
+                                <a th:href="@{/vehicle/{id}(id=${record.vehicleId})}" th:text="${record.vehicleId}"></a>
+                            </td>
                             <td th:text="${record.serviceDate}"></td>
                             <td th:text="${record.description}"></td>
                             <td th:text="${record.cost}"></td>
