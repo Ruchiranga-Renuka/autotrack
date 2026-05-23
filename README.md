@@ -33,6 +33,7 @@ java -cp out com.example.vehicleservice.VehicleServiceApp
 - List service records by vehicle ID
 
 
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/343c6825-45bc-431b-ac02-11cef628b39c" />
-<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/e4ba7996-98c7-4adc-b609-fe288f6f5646" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/4f1af92b-c41f-4585-b4a0-9fe050dd6c00" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/61679bfd-33f6-4eea-a33e-0b8dfe9ab955" />
+
 
