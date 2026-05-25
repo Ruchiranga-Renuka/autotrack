@@ -39,32 +39,29 @@
         <p class="services-subtitle">Premium vehicle maintenance and care solutions</p>
 
         <div class="services-grid">
-            <div class="service-card">
+            <a th:href="@{/vehicles}" class="service-card" style="text-decoration: none; color: inherit;">
                 <img class="service-card-image" th:src="@{/images/service-motorcycle.jpg}" alt="Motorcycle service" />
                 <div class="service-card-body">
                     <h3>Motorcycle Service</h3>
                     <p>Expert care for your two-wheelers with specialized maintenance</p>
-                    <a class="button-link secondary" style="margin-top: 20px;" th:href="@{/vehicles}">Book Service</a>
                 </div>
-            </div>
+            </a>
 
-            <div class="service-card">
+            <a th:href="@{/vehicles}" class="service-card" style="text-decoration: none; color: inherit;">
                 <img class="service-card-image" th:src="@{/images/service-car.jpg}" alt="Car service" />
                 <div class="service-card-body">
                     <h3>Car Service</h3>
                     <p>Comprehensive servicing for all types of cars</p>
-                    <a class="button-link secondary" style="margin-top: 20px;" th:href="@{/vehicles}">Book Service</a>
                 </div>
-            </div>
+            </a>
 
-            <div class="service-card">
+            <a th:href="@{/vehicles}" class="service-card" style="text-decoration: none; color: inherit;">
                 <img class="service-card-image" th:src="@{/images/service-truck.jpg}" alt="Heavy vehicle service" />
                 <div class="service-card-body">
                     <h3>Heavy Vehicle Service</h3>
                     <p>Professional maintenance for trucks and heavy vehicles</p>
-                    <a class="button-link secondary" style="margin-top: 20px;" th:href="@{/vehicles}">Book Service</a>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="cta-section">
