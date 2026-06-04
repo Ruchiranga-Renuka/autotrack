@@ -1,13 +1,21 @@
 package com.example.vehicleservice;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
 
+@Document(collection = "service_records")
 public class ServiceRecord {
-    private final String id;
-    private final String vehicleId;
-    private final LocalDate serviceDate;
-    private final String description;
-    private final double cost;
+    @Id
+    private String id;
+    private String vehicleId;
+    private LocalDate serviceDate;
+    private String description;
+    private double cost;
+
+    protected ServiceRecord() {
+    }
 
     public ServiceRecord(String id, String vehicleId, LocalDate serviceDate, String description, double cost) {
         this.id = id;
