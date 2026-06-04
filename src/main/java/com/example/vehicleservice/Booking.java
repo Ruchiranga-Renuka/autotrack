@@ -1,14 +1,22 @@
 package com.example.vehicleservice;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
 
+@Document(collection = "bookings")
 public class Booking {
-    private final String id;
-    private final String customerId;
-    private final String vehicleId;
+    @Id
+    private String id;
+    private String customerId;
+    private String vehicleId;
     private LocalDate requestedDate;
     private String description;
     private BookingStatus status;
+
+    protected Booking() {
+    }
 
     public Booking(String id, String customerId, String vehicleId, LocalDate requestedDate, String description) {
         this.id = id;
