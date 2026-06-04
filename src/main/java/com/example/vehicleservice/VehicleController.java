@@ -1,8 +1,5 @@
 package com.example.vehicleservice;
 
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,12 +18,12 @@ import java.util.UUID;
 @Controller
 public class VehicleController {
 
-    private final ServiceManager manager = new ServiceManager();
-    private final InMemoryUserDetailsManager userDetailsManager;
-    private final List<RegisteredUser> registeredUsers = new ArrayList<>();
+    private final ServiceManager manager;
+    private final UserAccountService userAccountService;
 
-    public VehicleController(InMemoryUserDetailsManager userDetailsManager) {
-        this.userDetailsManager = userDetailsManager;
+    public VehicleController(ServiceManager manager, UserAccountService userAccountService) {
+        this.manager = manager;
+        this.userAccountService = userAccountService;
     }
 
     @GetMapping("/")
@@ -86,19 +82,12 @@ public class VehicleController {
             return "register";
         }
 
-        if (userDetailsManager.userExists(username)) {
+        if (userAccountService.usernameExists(username)) {
             model.addAttribute("error", "That username is already taken. Choose another one.");
             return "register";
         }
 
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username(username)
-                .password(password)
-                .roles("USER")
-                .build();
-
-        userDetailsManager.createUser(user);
-        registeredUsers.add(new RegisteredUser(UUID.randomUUID().toString(), username, fullName, vehicleNumber, idNumber, telephone, address));
+        userAccountService.register(username, password, fullName, vehicleNumber, idNumber, telephone, address);
 
         model.addAttribute("success", "Registration complete! You can now log in with your username.");
         return "login";
