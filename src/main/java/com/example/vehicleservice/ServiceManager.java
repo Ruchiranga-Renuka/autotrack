@@ -1,97 +1,87 @@
 package com.example.vehicleservice;
 
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class ServiceManager {
-    private final List<Vehicle> vehicles = new ArrayList<>();
-    private final List<ServiceRecord> records = new ArrayList<>();
-    private final List<Customer> customers = new ArrayList<>();
-    private final List<Booking> bookings = new ArrayList<>();
+    private final VehicleRepository vehicleRepository;
+    private final ServiceRecordRepository serviceRecordRepository;
+    private final CustomerRepository customerRepository;
+    private final BookingRepository bookingRepository;
+
+    public ServiceManager(VehicleRepository vehicleRepository,
+                          ServiceRecordRepository serviceRecordRepository,
+                          CustomerRepository customerRepository,
+                          BookingRepository bookingRepository) {
+        this.vehicleRepository = vehicleRepository;
+        this.serviceRecordRepository = serviceRecordRepository;
+        this.customerRepository = customerRepository;
+        this.bookingRepository = bookingRepository;
+    }
 
     public Vehicle addVehicle(String vehicleMake, String model, int year, String ownerName, String photoPath) {
         Vehicle vehicle = new Vehicle(generateId(), vehicleMake, model, year, ownerName, photoPath);
-        vehicles.add(vehicle);
-        return vehicle;
+        return vehicleRepository.save(vehicle);
     }
 
     public Optional<Vehicle> findVehicleById(String vehicleId) {
-        return vehicles.stream().filter(v -> v.getId().equals(vehicleId)).findFirst();
+        return vehicleRepository.findById(vehicleId);
     }
 
     public List<Vehicle> listVehicles() {
-        return List.copyOf(vehicles);
+        return vehicleRepository.findAll();
     }
 
     public Customer addCustomer(String name, String email, String phone) {
         Customer customer = new Customer(generateId(), name, email, phone);
-        customers.add(customer);
-        return customer;
+        return customerRepository.save(customer);
     }
 
     public Optional<Customer> findCustomerByEmail(String email) {
-        return customers.stream().filter(c -> c.getEmail().equalsIgnoreCase(email)).findFirst();
+        return customerRepository.findByEmailIgnoreCase(email);
     }
 
     public List<Customer> listCustomers() {
-        return List.copyOf(customers);
+        return customerRepository.findAll();
     }
 
     public Booking addBooking(String customerId, String vehicleId, LocalDate requestedDate, String description) {
         Booking booking = new Booking(generateId(), customerId, vehicleId, requestedDate, description);
-        bookings.add(booking);
-        return booking;
+        return bookingRepository.save(booking);
     }
 
     public Optional<Booking> findBookingById(String bookingId) {
-        return bookings.stream().filter(b -> b.getId().equals(bookingId)).findFirst();
+        return bookingRepository.findById(bookingId);
     }
 
     public List<Booking> listBookings() {
-        return List.copyOf(bookings);
+        return bookingRepository.findAll();
     }
 
     public List<Booking> listBookingsForVehicle(String vehicleId) {
-        List<Booking> filtered = new ArrayList<>();
-        for (Booking booking : bookings) {
-            if (booking.getVehicleId().equals(vehicleId)) {
-                filtered.add(booking);
-            }
-        }
-        return filtered;
+        return bookingRepository.findByVehicleId(vehicleId);
     }
 
     public List<Booking> listBookingsForCustomer(String customerId) {
-        List<Booking> filtered = new ArrayList<>();
-        for (Booking booking : bookings) {
-            if (booking.getCustomerId().equals(customerId)) {
-                filtered.add(booking);
-            }
-        }
-        return filtered;
+        return bookingRepository.findByCustomerId(customerId);
     }
 
     public ServiceRecord addServiceRecord(String vehicleId, LocalDate serviceDate, String description, double cost) {
         ServiceRecord record = new ServiceRecord(generateId(), vehicleId, serviceDate, description, cost);
-        records.add(record);
-        return record;
+        return serviceRecordRepository.save(record);
     }
 
     public List<ServiceRecord> listServiceRecords() {
-        return List.copyOf(records);
+        return serviceRecordRepository.findAll();
     }
 
     public List<ServiceRecord> listRecordsForVehicle(String vehicleId) {
-        List<ServiceRecord> filtered = new ArrayList<>();
-        for (ServiceRecord record : records) {
-            if (record.getVehicleId().equals(vehicleId)) {
-                filtered.add(record);
-            }
-        }
-        return filtered;
+        return serviceRecordRepository.findByVehicleId(vehicleId);
     }
 
     public Booking completeBooking(String bookingId, double cost) {
@@ -100,6 +90,7 @@ public class ServiceManager {
             throw new IllegalArgumentException("Booking is already completed.");
         }
         booking.setStatus(BookingStatus.COMPLETED);
+        bookingRepository.save(booking);
         addServiceRecord(booking.getVehicleId(), booking.getRequestedDate(), booking.getDescription(), cost);
         return booking;
     }
@@ -110,7 +101,7 @@ public class ServiceManager {
             throw new IllegalArgumentException("Booking cannot be cancelled.");
         }
         booking.setStatus(BookingStatus.CANCELLED);
-        return booking;
+        return bookingRepository.save(booking);
     }
 
     public boolean updateVehicle(String vehicleId, String vehicleMake, String model, int year, String ownerName) {
@@ -121,6 +112,7 @@ public class ServiceManager {
             vehicle.setModel(model);
             vehicle.setYear(year);
             vehicle.setOwnerName(ownerName);
+            vehicleRepository.save(vehicle);
             return true;
         }
         return false;
@@ -133,6 +125,7 @@ public class ServiceManager {
             customer.setName(name);
             customer.setEmail(email);
             customer.setPhone(phone);
+            customerRepository.save(customer);
             return true;
         }
         return false;
@@ -145,6 +138,7 @@ public class ServiceManager {
             if (booking.getStatus() == BookingStatus.PENDING) {
                 booking.setRequestedDate(requestedDate);
                 booking.setDescription(description);
+                bookingRepository.save(booking);
                 return true;
             }
         }
@@ -152,81 +146,78 @@ public class ServiceManager {
     }
 
     public boolean deleteVehicle(String vehicleId) {
-        return vehicles.removeIf(v -> v.getId().equals(vehicleId));
+        if (!vehicleRepository.existsById(vehicleId)) {
+            return false;
+        }
+        vehicleRepository.deleteById(vehicleId);
+        return true;
     }
 
     public boolean deleteCustomer(String customerId) {
-        return customers.removeIf(c -> c.getId().equals(customerId));
+        if (!customerRepository.existsById(customerId)) {
+            return false;
+        }
+        customerRepository.deleteById(customerId);
+        return true;
     }
 
     public boolean deleteBooking(String bookingId) {
         Optional<Booking> bookingOpt = findBookingById(bookingId);
         if (bookingOpt.isPresent() && bookingOpt.get().getStatus() == BookingStatus.PENDING) {
-            bookings.removeIf(b -> b.getId().equals(bookingId));
+            bookingRepository.deleteById(bookingId);
             return true;
         }
         return false;
     }
 
     public Optional<Customer> findCustomerById(String customerId) {
-        return customers.stream().filter(c -> c.getId().equals(customerId)).findFirst();
+        return customerRepository.findById(customerId);
     }
 
     public List<Vehicle> searchVehiclesByMake(String make) {
-        return vehicles.stream()
-                .filter(v -> v.getMake().equalsIgnoreCase(make))
-                .toList();
+        return vehicleRepository.findByMakeIgnoreCase(make);
     }
 
     public List<Vehicle> searchVehiclesByModel(String model) {
-        return vehicles.stream()
-                .filter(v -> v.getModel().equalsIgnoreCase(model))
-                .toList();
+        return vehicleRepository.findByModelIgnoreCase(model);
     }
 
     public List<Customer> searchCustomersByName(String name) {
-        return customers.stream()
-                .filter(c -> c.getName().toLowerCase().contains(name.toLowerCase()))
-                .toList();
+        return customerRepository.findByNameContainingIgnoreCase(name);
     }
 
     public List<Booking> listPendingBookings() {
-        return bookings.stream()
-                .filter(b -> b.getStatus() == BookingStatus.PENDING)
-                .toList();
+        return bookingRepository.findByStatus(BookingStatus.PENDING);
     }
 
     public List<Booking> listCompletedBookings() {
-        return bookings.stream()
-                .filter(b -> b.getStatus() == BookingStatus.COMPLETED)
-                .toList();
+        return bookingRepository.findByStatus(BookingStatus.COMPLETED);
     }
 
     public List<Booking> listCancelledBookings() {
-        return bookings.stream()
-                .filter(b -> b.getStatus() == BookingStatus.CANCELLED)
-                .toList();
+        return bookingRepository.findByStatus(BookingStatus.CANCELLED);
     }
 
     public double getTotalRevenue() {
-        return records.stream()
+        return serviceRecordRepository.findAll().stream()
                 .mapToDouble(ServiceRecord::getCost)
                 .sum();
     }
 
     public int getTotalServices() {
-        return records.size();
+        return (int) serviceRecordRepository.count();
     }
 
     public double getAverageServiceCost() {
-        if (records.isEmpty()) return 0.0;
-        return getTotalRevenue() / records.size();
+        long count = serviceRecordRepository.count();
+        if (count == 0) {
+            return 0.0;
+        }
+        return getTotalRevenue() / count;
     }
 
     public List<ServiceRecord> getServiceRecordsByDateRange(LocalDate startDate, LocalDate endDate) {
-        return records.stream()
-                .filter(r -> !r.getServiceDate().isBefore(startDate) && !r.getServiceDate().isAfter(endDate))
-                .toList();
+        return serviceRecordRepository.findByServiceDateBetween(startDate, endDate);
     }
 
     private static String generateId() {
