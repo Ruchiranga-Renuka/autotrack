@@ -1,10 +1,18 @@
 package com.example.vehicleservice;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "customers")
 public class Customer {
-    private final String id;
+    @Id
+    private String id;
     private String name;
     private String email;
     private String phone;
+
+    protected Customer() {
+    }
 
     public Customer(String id, String name, String email, String phone) {
         this.id = id;
