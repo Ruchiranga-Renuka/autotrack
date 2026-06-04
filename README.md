@@ -1,39 +1,75 @@
 # Vehicle Service Management System
 
-A basic Java console application for managing vehicles and service records.
+A Spring Boot web application for managing vehicles, service records, bookings, and user registration.
 
-## Run
+## Prerequisites
 
-### Option 1: Maven (recommended)
+- JDK 17+
+- Maven
+- MongoDB Atlas cluster (or local MongoDB for development)
 
-1. Install Maven and JDK 17.
-2. From the project root:
+## MongoDB Atlas setup
 
-```bash
-mvn compile
-mvn exec:java -Dexec.mainClass="com.example.vehicleservice.VehicleServiceApp"
+1. Sign in at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create a free cluster.
+2. **Database Access**: create a database user with a password.
+3. **Network Access**: add your IP address (or `0.0.0.0/0` for development only).
+4. **Connect** → **Drivers** → copy the connection string.
+5. Replace `<password>` with your user password and set the database name to `vehicle-service` in the URI path.
+
+Example:
+
+```
+mongodb+srv://myuser:myPassword@cluster0.xxxxx.mongodb.net/vehicle-service?retryWrites=true&w=majority
 ```
 
-### Option 2: Direct Java compile
+## Configure the connection
 
-1. Install JDK 17.
-2. From the project root:
+Set the `MONGODB_URI` environment variable before starting the app.
+
+**Windows (PowerShell):**
+
+```powershell
+$env:MONGODB_URI="mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/vehicle-service?retryWrites=true&w=majority"
+mvn spring-boot:run
+```
+
+**macOS / Linux:**
 
 ```bash
-javac -d out src/main/java/com/example/vehicleservice/*.java
-java -cp out com.example.vehicleservice.VehicleServiceApp
+export MONGODB_URI="mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/vehicle-service?retryWrites=true&w=majority"
+mvn spring-boot:run
 ```
+
+You can also copy `.env.example` to `.env` and load it with your IDE or a tool like `dotenv`. Do not commit `.env` (it is in `.gitignore`).
+
+If `MONGODB_URI` is not set, the app falls back to `mongodb://localhost:27017/vehicle-service`.
+
+## Run the web app
+
+```bash
+mvn spring-boot:run
+```
+
+Open [http://localhost:8080](http://localhost:8080).
+
+Default admin account (created on first startup if missing):
+
+- Username: `admin`
+- Password: `password`
+
+## Data stored in MongoDB
+
+| Collection        | Contents                          |
+|-------------------|-----------------------------------|
+| `vehicles`        | Registered vehicles               |
+| `service_records` | Service history                   |
+| `customers`       | Customer profiles                 |
+| `bookings`        | Service bookings                  |
+| `users`           | Login accounts and registration   |
 
 ## Features
 
-- Add vehicles
-- List registered vehicles
-- Add service records for vehicles
-- List all service records
-- List service records by vehicle ID
-
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/b5cdc008-ff2f-4a4a-860b-5f42e045907d" />
-
-
-
-
+- Add vehicles and service records
+- User registration and login (stored in MongoDB)
+- List vehicles and service records
+- Vehicle detail pages with per-vehicle history
